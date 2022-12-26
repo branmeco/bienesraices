@@ -154,7 +154,7 @@ incluirTemplate('header');
                 <?php endwhile; ?>
             </select>
         </fieldset>
-        <input type="submit" value="Crear propiedad" class="boton boton-verde">
+        <input type="submit" value="Actualizar propiedad" class="boton boton-verde">
     </form>
 </main>
 

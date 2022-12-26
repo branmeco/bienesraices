@@ -1,6 +1,19 @@
 <?php
+
+//Importar la conexión
+require '../includes/config/database.php';
+$db = conectarDB();
+
+//Escribir el query
+$query = "SELECT * FROM propiedades";
+
+//Consultar la DB
+$resultadoConsulta = mysqli_query($db, $query);
+
+//Muestra mensaje condicional
 $resultado = $_GET['resultado'] ?? null;
 
+//Incluye un template
 require '../includes/funciones.php';
 incluirTemplate('header');
 ?>
@@ -21,20 +34,26 @@ incluirTemplate('header');
                 <th>Acciones</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody> <!--Mostrar los resultados-->
+            <?php while($propiedad = mysqli_fetch_assoc($resultadoConsulta)): ?>
             <tr>
-                <th>1</th>
-                <th>Casa en la playa</th>
-                <th><img src="/imagenes/c6f3516490b4a86c15add2b904b372a9.jpg" class="imagen-tabla"></th>
-                <th>1200000</th>
-                <th>
+                <td><?php echo $propiedad['id']; ?></td>
+                <td><?php echo $propiedad['titulo']; ?></td>
+                <td><img src="/imagenes/<?php echo $propiedad['imagen']; ?>" class="imagen-table"></td>
+                <td>$ <?php echo $propiedad['precio']; ?></td>
+                <td>
                     <a href="#" class="boton-rojo-block">Eliminar</a>
                     <a href="#" class="boton-amarillo-block">Actualizar</a>
-                </th>
+                </td>
             </tr>
+            <?php endwhile; ?>
         </tbody>
     </table>
 </main>
 <?php
-incluirTemplate('footer');
+
+    //Cerrar la conexión
+    mysqli_close($db);
+
+    incluirTemplate('footer');
 ?>

@@ -1,0 +1,17 @@
+{
+    "name": "usuario/bienes-raices",
+    "description": "Creando un proyecto con POO",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "./classes"
+        }
+    },
+    "authors": [
+        {
+            "name": "branmeco",
+            "email": "branmeco17@gmail.com"
+        }
+    ],
+    "require": {}
+}

@@ -1,14 +1,16 @@
 <?php 
 
-    require '../../includes/funciones.php';
+    require '../../includes/app.php';
+
+    use App\Propiedad;
+    $propiedad = new Propiedad;
+
     $auth = estaAutenticado();
 
     if(!$auth) {
         header('Location: /');
     }
 
-    // Base de datos
-    require '../../includes/config/database.php';
     $db = conectarDB();
 
     // Consultar para obtener los vendedores
@@ -28,15 +30,6 @@
 
     // Ejecutar el código después de que el usuario envia el formulario
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-        // echo "<pre>";
-        // var_dump($_POST);
-        // echo "</pre>";
-
-        // echo "<pre>";
-        // var_dump($_FILES);
-        // echo "</pre>";
-
 
         $titulo = mysqli_real_escape_string( $db,  $_POST['titulo'] );
         $precio = mysqli_real_escape_string( $db,  $_POST['precio'] );

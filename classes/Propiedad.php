@@ -45,6 +45,11 @@ class Propiedad
         $atributos = $this->sanitizarAtributos();
 
         // Insertar en la base de datos
+        $query = "INSERT INTO propiedades ( ";
+        $query .= join('. ', array_keys($atributos));
+        $query .= " ) VALUES ( ";
+        $query .= join(", ", array_values($atributos));
+        $query .= " ) ";
         $query = " INSERT INTO propiedades (titulo, precio, imagen, descripcion, habitaciones, wc, estacionamiento, creado, vendedorId ) VALUES ( '$this->titulo', '$this->precio', '$this->imagen', '$this->descripcion', '$this->habitaciones', '$this->wc', '$this->estacionamiento', '$this->creado', '$this->vendedorId' ) ";
 
         $resultado = self::$db->query($query);
@@ -72,6 +77,6 @@ class Propiedad
             $sanitizado[$key] = self::$db->escape_string($value);
         }
 
-        debuguear($sanitizado);
+        return $sanitizado;
     }
 }

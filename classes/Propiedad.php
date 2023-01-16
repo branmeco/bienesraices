@@ -84,9 +84,10 @@ class Propiedad
 
 
     //Subida de archivos
-    public function setImagen($imagen){
+    public function setImagen($imagen)
+    {
         //Asignar al atributo de imagen el nombre de la imagen
-        if($imagen){
+        if ($imagen) {
             $this->imagen = $imagen;
         }
     }
@@ -131,13 +132,44 @@ class Propiedad
             self::$errores[] = 'La Imagen es Obligatoria';
         }
 
-        // // Validar por tamaño (1mb máximo)
-        // $medida = 1000 * 1000;
-
-
-        // if ($this->imagen['size'] > $medida) {
-        //     $errores[] = 'La Imagen es muy pesada';
-        // }
         return self::$errores;
     }
+
+    //Listar todas las propiedades
+    public static function all(){
+        $query = "SELECT * FROM propiedades";
+
+        $resultado = self::consultarSQL($query);
+
+        return $resultado;
+    }
+
+    public static function consultarSQL($query){
+        //Consultar la base de datos
+        $resultado = self::$db->query($query);
+
+        //Iterar los reusltados
+        $array = [];
+        while($registro = $resultado->fetch_assoc()){
+            $array[] = self::crearObjeto($registro);
+        }
+
+        //Liberar la memoria
+        $resultado->free();
+
+        // retornar los resultados
+        return $array;
+    }
+
+    public static function crearObjeto($registro){
+        $objeto = new self;
+
+        foreach($registro as $key => $value ){
+            if(property_exists($objeto, $key)){
+                $objeto -> $key = $value;
+            }
+        }
+        return $objeto;
+    }
+
 }

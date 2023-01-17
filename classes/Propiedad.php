@@ -85,6 +85,14 @@ class Propiedad
     //Subida de archivos
     public function setImagen($imagen)
     {
+        if ($this->id) {
+            //Completar si existe el archivo
+            $existeArchivo = file_exists(CARPETAS_IMAGENES . $this->imagen);
+            if ($existeArchivo) {
+                unlink(CARPETAS_IMAGENES . $this->imagen);
+            }
+        }
+
         //Asignar al atributo de imagen el nombre de la imagen
         if ($imagen) {
             $this->imagen = $imagen;
@@ -186,8 +194,8 @@ class Propiedad
     //Sincroniza el objeto en memoria con los cambios realizados por el usuario
     public function sincronizar($args = [])
     {
-        foreach($args as $key => $value){
-            if(property_exists($this, $key) && !is_null($value)){
+        foreach ($args as $key => $value) {
+            if (property_exists($this, $key) && !is_null($value)) {
                 $this->$key = $value;
             }
         }

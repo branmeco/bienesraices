@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //Asiganar los atributos
     $args = $_POST['propiedad'];
 
-    $propiedad -> sincronizar($args);
+    $propiedad->sincronizar($args);
 
     //validación
     $errores = $propiedad->validar();
@@ -41,23 +41,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //Generar un nombre unico
     $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
 
-    if($_FILES['propiedad']['tmp_name']['imagen']){
+    if ($_FILES['propiedad']['tmp_name']['imagen']) {
         $image = Image::make($_FILES['propiedades']['tmp_name']['imagen'])->fit(800, 600);
-        $propiedad -> setImagen($nombreImagen);
+        $propiedad->setImagen($nombreImagen);
     }
 
     // Revisar que el array de errores este vacio
     if (empty($errores)) {
+        //Almacenar la imagen
+        $image -> save(CARPETAS_IMAGENES . $nombreImagen);
 
-        // Insertar en la base de datos
-        $query = " UPDATE propiedades SET titulo = '${titulo}', precio = '${precio}', imagen = '${nombreImagen}', descripcion = '${descripcion}', habitaciones = ${habitaciones}, wc = ${wc}, estacionamiento = ${estacionamiento}, vendedorId = ${vendedorId} WHERE id = ${id} ";
-
-        $resultado = mysqli_query($db, $query);
-
-        if ($resultado) {
-            // Redireccionar al usuario.
-            header('Location: /admin?resultado=2');
-        }
+        $propiedad->guardar();
     }
 }
 

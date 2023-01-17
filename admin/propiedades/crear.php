@@ -3,13 +3,15 @@
 require '../../includes/app.php';
 
 use App\Propiedad;
-use Intervention\Image\ImageManagerStatic as Image;
 
 estaAutenticado();
 
+//Importar Intervention Image
+use Intervention\Image\ImageManagerStatic as Image;
+
 $db = conectarDB();
 
-$propiedad = new Propiedad;
+$propiedad = new Propiedad($_POST['propiedad']);
 
 // Consultar para obtener los vendedores
 $consulta = "SELECT * FROM vendedores";
@@ -29,8 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     //Setar la nueva imagen
     // Realiza un resize a la imagen con intervetion
-    if ($_FILES['image']['tmp_name']) {
-        $image = Image::make($_FILES['imagen']['tmp_name'])->fit(800, 600);
+    if ($_FILES['propiedad']['tmp_name']['imagen']) {
+        $image = Image::make($_FILES['propiedad']['tmp_name']['imagen'])->fit(800, 600);
         $propiedad->setImagen($nombreImagen);
     }
 
@@ -42,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errores)) {
 
         /** SUBIDA DE ARCHIVOS */
-
         // Crear carpeta
         if (!is_dir(CARPETAS_IMAGENES)) {
             mkdir(CARPETAS_IMAGENES);
@@ -67,27 +68,17 @@ incluirTemplate('header');
 
 <main class="contenedor seccion">
     <h1>Crear</h1>
-
-
-
     <a href="/admin" class="boton boton-verde">Volver</a>
-
     <?php foreach ($errores as $error) : ?>
         <div class="alerta error">
             <?php echo $error; ?>
         </div>
     <?php endforeach; ?>
-
     <form class="formulario" method="POST" action="/admin/propiedades/crear.php" enctype="multipart/form-data">
-
         <?php include '../../includes/templates/formulario_propiedades.php'; ?>
-
         <input type="submit" value="Crear Propiedad" class="boton boton-verde">
-
     </form>
-
 </main>
-
 <?php
 incluirTemplate('footer');
 ?>

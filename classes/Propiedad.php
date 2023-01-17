@@ -82,7 +82,6 @@ class Propiedad
         return $sanitizado;
     }
 
-
     //Subida de archivos
     public function setImagen($imagen)
     {
@@ -136,7 +135,8 @@ class Propiedad
     }
 
     //Listar todas las propiedades
-    public static function all(){
+    public static function all()
+    {
         $query = "SELECT * FROM propiedades";
 
         $resultado = self::consultarSQL($query);
@@ -144,13 +144,24 @@ class Propiedad
         return $resultado;
     }
 
-    public static function consultarSQL($query){
+    //Busca un registro por su id
+    public static function find($id)
+    {
+        $query = "SELECT * FROM propiedades WHERE id = ${id}";
+
+        $resultado = self::consultarSQL($query);
+
+        return array_shift($resultado);
+    }
+
+    public static function consultarSQL($query)
+    {
         //Consultar la base de datos
         $resultado = self::$db->query($query);
 
         //Iterar los reusltados
         $array = [];
-        while($registro = $resultado->fetch_assoc()){
+        while ($registro = $resultado->fetch_assoc()) {
             $array[] = self::crearObjeto($registro);
         }
 
@@ -161,15 +172,15 @@ class Propiedad
         return $array;
     }
 
-    public static function crearObjeto($registro){
+    public static function crearObjeto($registro)
+    {
         $objeto = new self;
 
-        foreach($registro as $key => $value ){
-            if(property_exists($objeto, $key)){
-                $objeto -> $key = $value;
+        foreach ($registro as $key => $value) {
+            if (property_exists($objeto, $key)) {
+                $objeto->$key = $value;
             }
         }
         return $objeto;
     }
-
 }

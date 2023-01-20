@@ -6,7 +6,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 require '../../includes/app.php';
 
-estaAutenticado();
+/* estaAutenticado(); */
 
 // Validar la URL por ID válido
 $id = $_GET['id'];
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     //Asiganar los atributos
     $args = $_POST['propiedad'];
-
+    
     $propiedad->sincronizar($args);
 
     //validación

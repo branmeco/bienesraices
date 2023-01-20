@@ -2,16 +2,13 @@
 
 require '../../includes/app.php';
 
-use App\Propiedad;
-
-estaAutenticado();
-
 //Importar Intervention Image
 use Intervention\Image\ImageManagerStatic as Image;
+use App\Propiedad;
 
-$db = conectarDB();
+/* estaAutenticado(); */
 
-$propiedad = new Propiedad($_POST['propiedad']);
+$propiedad = new Propiedad;
 
 // Consultar para obtener los vendedores
 $consulta = "SELECT * FROM vendedores";
@@ -22,9 +19,8 @@ $errores = Propiedad::getErrores();
 
 // Ejecutar el código después de que el usuario envia el formulario
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
     /**Crea una nueva instancia */
-    $propiedad = new Propiedad($_POST);
+    $propiedad = new Propiedad($_POST['propiedad']);
 
     // Generar un nombre único
     $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";

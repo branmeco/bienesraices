@@ -1,7 +1,7 @@
 <?php 
 
     require '../includes/app.php';
-    estaAutenticado();
+    /* estaAutenticado(); */
 
     use App\Propiedad;
 
@@ -11,8 +11,6 @@
     // Muestra mensaje condicional
     $resultado = $_GET['resultado'] ?? null;
 
-
-    
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = $_POST['id'];

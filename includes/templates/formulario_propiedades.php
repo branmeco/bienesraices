@@ -8,10 +8,10 @@
     <input type="number" id="precio" name="propiedad[precio]" placeholder="Precio Propiedad" value="<?php echo s($propiedad->precio); ?>">
 
     <label for="imagen">Imagen:</label>
-    <input type="file" id="imagen" accept="image/jpeg, image/png" name="propiedad[imagen]">
+    <input type="file" name="propiedad[imagen]" id="img" accept="image/jpge, image/png" >
 
     <?php if ($propiedad->imagen) { ?>
-        <img src="/imagenes/<?php echo $propiedad->imagen ?>" class="imagen-small">
+        <img src="../../imagenes/<?php echo $propiedad->imagen ?>" class="imagen-small">
     <?php } ?>
 
     <label for="descripcion">Descripción:</label>
@@ -36,10 +36,13 @@
 <fieldset>
     <legend>Vendedor</legend>
 
-    <select name="vendedor">
+    <select name="propiedad[vendedorId]">
         <option value="">-- Seleccione --</option>
         <?php while ($vendedor =  mysqli_fetch_assoc($resultado)) : ?>
-            <option <?php echo $vendedorId === $vendedor['id'] ? 'selected' : ''; ?> value="<?php echo s($propiedad->vendedor['id']); ?>"> <?php echo $vendedor['nombre'] . " " . $vendedor['apellido']; ?> </option>
+            <option <?php echo $propiedad->vendedorId === $vendedor['id'] ? 'selected' : ''; ?> 
+                value="<?php echo s($vendedor['id']); ?>" >
+                <?php echo $vendedor['nombre'] . " " . $vendedor['apellido']; ?>
+            </option>
         <?php endwhile; ?>
     </select>
 </fieldset>

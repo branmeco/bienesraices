@@ -6,7 +6,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 require '../../includes/app.php';
 
-estaAutenticado();
+/* estaAutenticado(); */
 
 // Validar la URL por ID válido
 $id = $_GET['id'];
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     //Asiganar los atributos
     $args = $_POST['propiedad'];
-
+    
     $propiedad->sincronizar($args);
 
     //validación
@@ -49,7 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Revisar que el array de errores este vacio
     if (empty($errores)) {
         //Almacenar la imagen
-        $image -> save(CARPETAS_IMAGENES . $nombreImagen);
+        if ($_FILES['propiedad']['tmp_name']['imagen']) {
+            $image->save(CARPETAS_IMAGENES . $nombreImagen);
+        }
 
         $propiedad->guardar();
     }

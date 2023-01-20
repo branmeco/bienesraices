@@ -30,7 +30,7 @@ class Propiedad
 
     public function __construct($args = [])
     {
-        $this->id = $args['id'] ?? '';
+        $this->id = $args['id'] ?? null;
         $this->titulo = $args['titulo'] ?? '';
         $this->precio = $args['precio'] ?? '';
         $this->imagen = $args['imagen'] ?? '';
@@ -49,7 +49,7 @@ class Propiedad
             $this->actualizar();
         } else {
             //Creando un nuevo registro
-            $this->crear();
+            return $this->crear();
         }
     }
 
@@ -119,7 +119,7 @@ class Propiedad
     //Subida de archivos
     public function setImagen($imagen)
     {
-        if (isset($this->id)) {
+        if (!is_null($this->id)) {
             //Completar si existe el archivo
             $existeArchivo = file_exists(CARPETAS_IMAGENES . $this->imagen);
             if ($existeArchivo) {

@@ -49,7 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Revisar que el array de errores este vacio
     if (empty($errores)) {
         //Almacenar la imagen
-        $image -> save(CARPETAS_IMAGENES . $nombreImagen);
+        if ($_FILES['propiedad']['tmp_name']['imagen']) {
+            $image->save(CARPETAS_IMAGENES . $nombreImagen);
+        }
 
         $propiedad->guardar();
     }

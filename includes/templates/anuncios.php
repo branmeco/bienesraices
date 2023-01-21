@@ -1,8 +1,7 @@
 <?php 
     // Importar la conexión
     $db = conectarDB();
-
-
+    
     // consultar
     $query = "SELECT * FROM propiedades LIMIT ${limite}";
 

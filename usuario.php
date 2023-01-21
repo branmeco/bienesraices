@@ -1,6 +1,7 @@
 <?php
 
 // Importar la conexión
+// Incluye el header
 require 'includes/app.php';
 
 $db = conectarDB();

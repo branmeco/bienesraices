@@ -1,10 +1,12 @@
 <?php
 
-use App\Propiedad;
-//Importar Intervention Image
-use Intervention\Image\ImageManagerStatic as Image;
-
 require '../../includes/app.php';
+
+use App\Propiedad;
+use App\Vendedor;
+
+// Importar Intervention Image
+use Intervention\Image\ImageManagerStatic as Image;
 
 estaAutenticado();
 
@@ -16,12 +18,11 @@ if (!$id) {
     header('Location: /admin');
 }
 
-//Validar la URL por Id válido
+// Obtener los datos de la propiedad
 $propiedad = Propiedad::find($id);
 
 // Consultar para obtener los vendedores
-$consulta = "SELECT * FROM vendedores";
-$resultado = mysqli_query($db, $consulta);
+$vendedores = Vendedor::all();
 
 // Arreglo con mensajes de errores
 $errores = Propiedad::getErrores();
@@ -29,34 +30,33 @@ $errores = Propiedad::getErrores();
 // Ejecutar el código después de que el usuario envia el formulario
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    //Asiganar los atributos
+    // Asignar los atributos
     $args = $_POST['propiedad'];
 
     $propiedad->sincronizar($args);
 
-    //validación
+
+    // Validación
     $errores = $propiedad->validar();
 
-    //Subida de archivos
-    //Generar un nombre unico
+    // Subida de archivos
+    // Generar un nombre único
     $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
 
     if ($_FILES['propiedad']['tmp_name']['imagen']) {
-        $image = Image::make($_FILES['propiedades']['tmp_name']['imagen'])->fit(800, 600);
+        $image = Image::make($_FILES['propiedad']['tmp_name']['imagen'])->fit(800, 600);
         $propiedad->setImagen($nombreImagen);
     }
 
-    // Revisar que el array de errores este vacio
     if (empty($errores)) {
-        //Almacenar la imagen
-        $image -> save(CARPETAS_IMAGENES . $nombreImagen);
+        // Almacenar la imagen
+        if ($_FILES['propiedad']['tmp_name']['imagen']) {
+            $image->save(CARPETA_IMAGENES . $nombreImagen);
+        }
 
         $propiedad->guardar();
     }
 }
-
-
-
 incluirTemplate('header');
 ?>
 
@@ -73,6 +73,7 @@ incluirTemplate('header');
 
     <form class="formulario" method="POST" enctype="multipart/form-data">
         <?php include '../../includes/templates/formulario_propiedades.php'; ?>
+
         <input type="submit" value="Actualizar Propiedad" class="boton boton-verde">
     </form>
 
